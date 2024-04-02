@@ -1,6 +1,6 @@
 package org.example
 
 interface IEntradaSalida {
-    fun consola ()
-    fun pedirNumero()
+    fun consola (mensaje: Any)
+    fun pedirNumero(): Int
 }
