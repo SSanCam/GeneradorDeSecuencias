@@ -11,8 +11,9 @@ class GeneradorSecuencias() : IEntradaSalida {
     private fun lineSequence(limit: Int = Int.MAX_VALUE) = generateSequence { readln() }.constrainOnce().take(numLimit)
 
     /**
-     * Consola, heredada de IEntradaSalida
-     * @return mensaje Any como una cadena de caracteres.
+     * Consola, heredada de IEntradaSalida, imprimirá lo que le enviemos a la función.
+     * @param mensaje Any Recibe datos de cualquier tipo.
+     * @return El mensaje como una cadena de caracteres.
      */
     override fun consola(mensaje: Any) {
         val imprimir = println(mensaje)
@@ -21,7 +22,8 @@ class GeneradorSecuencias() : IEntradaSalida {
 
     /**
      * Pedir números
-     * @return num Int Devuelve el número, que será el límite para el número de palabras de la secuencia.
+     * Irá pidiendo un número entero hasta que el dato sea correcto, éste número será el límite para el número de palabras de la secuencia.
+     * @return num Int Devuelve el número entero que hemos pedido.
      */
     override fun pedirNumero(): Int {
         var num: Int?
@@ -38,11 +40,15 @@ class GeneradorSecuencias() : IEntradaSalida {
      * atributo sec y mostrará una a una cada palabra que se va a ir insertando en la secuencia hasta finalmente tomar la frase completa.
      */
     fun fraseIncremental() {
-        consola("Introduce un número entero:")
-        var num = readLine()?.toInt()
-        while (num == null) {
-            consola("Debes introducir un número entero.\nInténtalo de nuevo.")
+        consola("Introduce palabras en secuencia seguidas de *intro*  :")
+        val palabras = mutableListOf<String>()
+        var i = 0
+        repeat(numLimit) {
+            palabras.add(readLine().toString())
+            consola(palabras[i])
+            i++
         }
+        sec = palabras.asSequence()
     }
 
     /**
@@ -51,8 +57,7 @@ class GeneradorSecuencias() : IEntradaSalida {
      */
     fun fraseFinal() {
         consola("Introduce seguidamente las palabras de la frase:         ")
-        sec = lineSequence()
-        consola(sec)
+        sec = generateSequence { readLine() }.take(numLimit)
     }
 
     /**
@@ -60,7 +65,8 @@ class GeneradorSecuencias() : IEntradaSalida {
      * Retornará el contenido del atributo sec en una sola línea separando sus elementos por un espacio.
      */
     private fun getSec(): String {
-        return sec.joinToString { " " }
+        return (sec.joinToString(" ") { it })
+
     }
 
     /**
